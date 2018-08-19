@@ -1,4 +1,5 @@
 <?php
+namespace AssetFinder;
 /**
  * Plugin Name: Asset Finder
  * Short Name: asset_finder
@@ -30,7 +31,11 @@ define( 'ASSET_FINDER_URI', plugins_url( '', __FILE__ ) . '/' );
 define( 'ASSET_FINDER_PATH', plugin_dir_path( __FILE__ ) );
 
 if ( is_admin() ) {
-	require_once( ASSET_FINDER_PATH . 'classes/Admin.php' );
+	require_once( ASSET_FINDER_PATH . 'classes/Settings.php' );
 } else {
-	require_once( ASSET_FINDER_PATH . 'classes/WebScript.php' );
+	if ( ! isset( $_GET[ 'afts' ] ) ) {
+		require_once( ASSET_FINDER_PATH . 'classes/DisplayWeb.php' );
+	} else {
+		require_once( ASSET_FINDER_PATH . 'classes/AssetCollector.php' );
+	}
 }

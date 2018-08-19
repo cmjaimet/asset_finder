@@ -1,7 +1,13 @@
 <?php
-$asset_finder = new AssetFinderAdmin();
+namespace AssetFinder;
+/**
+* Next steps:
+* 	- save handles and actions to wp_option as JSON
+*/
 
-class AssetFinderAdmin {
+$asset_finder = new \AssetFinder\Settings();
+
+class Settings {
 	private $title = 'Asset Finder';
 	private $debug = true;
 

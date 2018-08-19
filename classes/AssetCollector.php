@@ -1,7 +1,9 @@
 <?php
-$asset_finder = new AssetFinderWeb();
+namespace AssetFinder;
 
-class AssetFinderWeb {
+$asset_finder = new \AssetFinder\AssetCollector();
+
+class AssetCollector {
 	private $debug = true;
 
 	function __construct() {
