@@ -22,30 +22,28 @@ class AssetFinderAdmin {
 	function settings_page() {
 		echo '<h1>' . $this->title . '</h1>';
 		echo '<h2>Scripts</h2>';
-		echo '<table id="af_table_scripts" class="af_table"><tr><th>Handle</th><th>Source</th></tr></table>';
+		echo '<table id="af_table_scripts" class="af_table"><tr><th>Handle</th><th>Action</th><th>Source</th></tr></table>';
 		echo '<h2>Styles</h2>';
-		echo '<table id="af_table_styles" class="af_table"><tr><th>Handle</th><th>Source</th></tr></table>';
+		echo '<table id="af_table_styles" class="af_table"><tr><th>Handle</th><th>Action</th><th>Source</th></tr></table>';
 		$url = $this->get_settings_web_url( '' );
-		echo '<p>' . $url . '</p>';
 		$this->create_admin_script( $url );
-		//echo '<iframe src="' . esc_url( $url ) . '" style="width:100%;height:800px;"></iframe>';
 	}
 
 	/**
 	* Clever way to communicate between iframe and parent
 	* Modifed from Petar Bojinov: https://gist.github.com/pbojinov/8965299
 	*/
-	function create_admin_script( $url ) {
+	private function create_admin_script( $url ) {
 		echo "<script>
 		var iframeSource = '" . esc_url( $url ) . "';
 		</script>";
 	}
 
-	function get_settings_timestamp() {
+	private function get_settings_timestamp() {
 		return current_time( 'timestamp' ) + ( 5 * 60 ); // now + 5 minutes
 	}
 
-	function get_settings_web_url( $path ) {
+	private function get_settings_web_url( $path ) {
 		return site_url() . '/' . $path . '?afts=' . $this->get_settings_timestamp();
 	}
 }

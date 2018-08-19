@@ -19,7 +19,7 @@ class AssetFinderWeb {
 		}
 	}
 
-	function get_assets_in_page() {
+	public function get_assets_in_page() {
 		$json = '';
 		$assets = array();
 		$assets['scripts'] = $this->get_scripts_in_page();
@@ -28,17 +28,16 @@ class AssetFinderWeb {
 		$this->create_web_script( $json );
 	}
 
-	function create_web_script( $message ) {
+	private function create_web_script( $message ) {
 		echo "<script type='text/javascript'>
 		var sendMessage = function ( msg ) {
 			window.parent.postMessage( msg, '*' );
 		};
 		sendMessage( JSON.stringify(" . $message . ") );
 		</script>";
-		die();
 	}
 
-	function get_scripts_in_page() {
+	private function get_scripts_in_page() {
 		$all = wp_scripts()->registered;
 		$output = array();
 		foreach( $all as $slug => $elem ) {
@@ -57,7 +56,7 @@ class AssetFinderWeb {
 		return $output;
 	}
 
-	function get_styles_in_page() {
+	private function get_styles_in_page() {
 		$all = wp_styles()->registered;
 		$output = array();
 		foreach( $all as $slug => $elem ) {
@@ -79,7 +78,7 @@ class AssetFinderWeb {
 	/**
 	* Add some styles and scripts to the queue to test
 	*/
-	function add_test_assets() {
+	private function add_test_assets() {
 		if ( true === $this->debug ) {
 			wp_enqueue_style( 'asset_finder_style_test', ASSET_FINDER_URI . 'css/af_test.css', array(), 'v.1.0.0', 'screen' );
 			wp_enqueue_script( 'asset_finder_script_head', ASSET_FINDER_URI . 'js/af_test_head.js', array(), 'v.1.0.1', false );
