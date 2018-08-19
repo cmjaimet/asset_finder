@@ -1,6 +1,8 @@
-## Asset Finder Wordpress Plugin
+# Asset Finder Wordpress Plugin
 
-# Find the Scripts and Styles assets your Wordpress website loads
+### v.1.0.0
+
+## Find the Scripts and Styles assets your Wordpress website loads
 
 For now this tests only the home page. In future releases it will test several pages and may allow the user to select the pages to test.
 
