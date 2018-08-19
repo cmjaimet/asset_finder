@@ -1,9 +1,6 @@
 <?php
-define( 'ASSET_FINDER_URI', plugins_url( '', __FILE__ ) . '/' );
-
 class AssetFinder {
 	private $title = 'Asset Finder';
-	private $debug = true;
 
 	function __construct() {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
@@ -23,6 +20,7 @@ class AssetFinder {
 	}
 
 	function admin_init() {
+		wp_enqueue_style( 'asset_finder_style', ASSET_FINDER_URI . 'css/admin.css', array(), 'v.1.0.0', 'screen' );
 		wp_enqueue_script( 'asset_finder_script', ASSET_FINDER_URI . 'js/admin.js', array(), 'v.1.0.1', true );
 	}
 
@@ -31,7 +29,7 @@ class AssetFinder {
 	*/
 	function add_test_assets() {
 		if ( true === $this->debug ) {
-			wp_enqueue_style( 'asset_finder_style', ASSET_FINDER_URI . 'css/af_test.css', array(), 'v.1.0.0', 'screen' );
+			wp_enqueue_style( 'asset_finder_style_test', ASSET_FINDER_URI . 'css/af_test.css', array(), 'v.1.0.0', 'screen' );
 			wp_enqueue_script( 'asset_finder_script_head', ASSET_FINDER_URI . 'js/af_test_head.js', array(), 'v.1.0.1', false );
 			wp_enqueue_script( 'asset_finder_script_foot', ASSET_FINDER_URI . 'js/af_test_foot.js', array(), 'v.1.0.5', true );
 		}
@@ -106,9 +104,9 @@ class AssetFinder {
 	function settings_page() {
 		echo '<h1>' . $this->title . '</h1>';
 		echo '<h2>Scripts</h2>';
-		echo '<table id="af_table_scripts"><tr><th>Handle</th><th>Source</th></tr></table>';
+		echo '<table id="af_table_scripts" class="af_table"><tr><th>Handle</th><th>Source</th></tr></table>';
 		echo '<h2>Styles</h2>';
-		echo '<table id="af_table_styles"><tr><th>Handle</th><th>Source</th></tr></table>';
+		echo '<table id="af_table_styles" class="af_table"><tr><th>Handle</th><th>Source</th></tr></table>';
 		$url = $this->get_settings_web_url( '' );
 		echo '<p>' . $url . '</p>';
 		$this->create_admin_script( $url );
