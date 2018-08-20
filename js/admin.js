@@ -45,18 +45,22 @@ function afCreateSelect( idx, val ) {
 }
 
 function afDisplayForm( assets ) {
+	// alert( asset_finder_handles );
 	var table_scripts = document.getElementById( 'af_table_scripts' );
 	var count = 0;
 	for ( var property in assets.scripts ) {
 		if ( assets.scripts.hasOwnProperty( property ) ) {
-			var selected_value = '0'; // pull this value later via PHP from option
-			var select = afCreateSelect( 'af_script[' + count + ']', selected_value );
+			handle = assets.scripts[ property ].handle;
+			var action = ('undefined' !== typeof( asset_finder_handles['scripts'][ handle ] ) ) ? asset_finder_handles['scripts'][ handle ] : '0';
+			console.log( action	);
+			var selected_value = action;
+			var select = afCreateSelect( 'asset_finder[scripts][' + handle + ']', selected_value );
 			var tr = document.createElement( 'tr' );
 			var td0 = document.createElement( 'td' );
 			var td1 = document.createElement( 'td' );
 			var td2 = document.createElement( 'td' );
 			td1.appendChild( select );
-			td0.innerHTML = assets.scripts[ property ].handle;
+			td0.innerHTML = handle;
 			td2.innerHTML = assets.scripts[ property ].src;
 			tr.appendChild( td0 );
 			tr.appendChild( td1 );
@@ -69,14 +73,17 @@ function afDisplayForm( assets ) {
 	var count = 0;
 	for ( var property in assets.styles ) {
 		if ( assets.styles.hasOwnProperty( property ) ) {
-			var selected_value = '0'; // pull this value later via PHP from option
-			var select = afCreateSelect( 'af_style[' + count + ']', selected_value );
+			handle = assets.styles[ property ].handle;
+			var action = ('undefined' !== typeof( asset_finder_handles['styles'][ handle ] ) ) ? asset_finder_handles['styles'][ handle ] : '0';
+			console.log( action );
+			var selected_value = action;
+			var select = afCreateSelect( 'asset_finder[styles][' + handle + ']', selected_value );
 			var tr = document.createElement( 'tr' );
 			var td0 = document.createElement( 'td' );
 			var td1 = document.createElement( 'td' );
 			var td2 = document.createElement( 'td' );
 			td1.appendChild( select );
-			td0.innerHTML = assets.styles[ property ].handle;
+			td0.innerHTML = handle;
 			td2.innerHTML = assets.styles[ property ].src;
 			tr.appendChild( td0 );
 			tr.appendChild( td1 );

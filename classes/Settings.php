@@ -16,20 +16,63 @@ class Settings {
 	*
 	*/
 	function __construct() {
+		add_action( 'admin_init', array( $this, 'plugin_admin_init' ) );
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
-	/**
-	* Enqueue scripts and styles selectively bsed on admin screen
-	*
-	*/
-	function admin_enqueue_scripts() {
-		$screen = get_current_screen();
-		if ( 'settings_page_asset-finder-settings' === $screen->id ) {
-			wp_enqueue_style( 'asset_finder_style', ASSET_FINDER_URI . 'css/admin.css', array(), 'v.1.0.0', 'screen' );
-			wp_enqueue_script( 'asset_finder_script', ASSET_FINDER_URI . 'js/admin.js', array(), 'v.1.0.1', true );
+	function plugin_admin_init() {
+		register_setting( 'asset_finder', 'asset_finder', array( $this, 'sanitize_settings' ) );
+		add_settings_section('asset_finder_main', 'Main Settings', array( $this, 'section_text' ), 'asset_finder_settings');
+		add_settings_field('af_style', 'Plugin Text Input', array( $this, 'plugin_setting_string' ), 'asset_finder_settings', 'asset_finder_main');
+	}
+
+	function plugin_setting_string() {
+		$options = get_option( 'asset_finder' );
+		echo '<script>' . "\n";
+		// JSON-encoded list of scripts and styles to be handled differently from default
+		// decode then encode as a way to escpae the contents since JSON is JS-safe
+		echo "var asset_finder_handles = " . json_encode( json_decode( $options ) ) . ";";
+		// store in JS and use after assets loaded by create_admin_script()
+		echo '</script>';
+	}
+
+	function sanitize_settings($input) {
+		$output = array( 'scripts' => array(), 'styles' => array() );
+		// $newinput['scripts'] = trim($input['scripts']);
+		foreach( $input['scripts'] as $handle => $action ) {
+			$action = intval( $action );
+			if ( 0 < $action ) {
+				$output['scripts'][ $handle ] = $action;
+			}
 		}
+		foreach( $input['styles'] as $handle => $action ) {
+			$action = intval( $action );
+			if ( 0 < $action ) {
+				$output['styles'][ $handle ] = $action;
+			}
+		}
+		return json_encode( $output );
+	}
+
+	function settings_page() {
+		echo '<div>';
+		echo '<h1>' . esc_html( $this->title ) . '</h1>';
+		echo '<form action="options.php" method="post">';
+		settings_fields('asset_finder');
+		do_settings_sections('asset_finder_settings');
+		echo '<h2>Scripts</h2>';
+		echo '<table id="af_table_scripts" class="af_table"><tr><th>Handle</th><th>Action</th><th>Source</th></tr></table>';
+		echo '<h2>Styles</h2>';
+		echo '<table id="af_table_styles" class="af_table"><tr><th>Handle</th><th>Action</th><th>Source</th></tr></table>';
+		$url = $this->get_settings_web_url( '' );
+		$this->create_admin_script( $url );
+		submit_button();
+		echo '</form></div>';
+	}
+
+	function section_text() {
+		echo '<p>You may choose to late-load or remove each script and stylesheet below.</p>';
 	}
 
 	/**
@@ -37,22 +80,7 @@ class Settings {
 	*
 	*/
 	function admin_menu() {
-		add_options_page( 'Asset Finder', 'Asset Finder', 'manage_options', 'asset-finder-settings', array( $this, 'settings_page' ) );
-	}
-
-	/**
-	* Display the plugin settings page where the enqueue management happens.
-	* This is in settings because it presupposes that oly an administrator should have access.
-	*
-	*/
-	function settings_page() {
-		echo '<h1>' . $this->title . '</h1>';
-		echo '<h2>Scripts</h2>';
-		echo '<table id="af_table_scripts" class="af_table"><tr><th>Handle</th><th>Action</th><th>Source</th></tr></table>';
-		echo '<h2>Styles</h2>';
-		echo '<table id="af_table_styles" class="af_table"><tr><th>Handle</th><th>Action</th><th>Source</th></tr></table>';
-		$url = $this->get_settings_web_url( '' );
-		$this->create_admin_script( $url );
+		add_options_page('Asset Finder', 'Asset Finder', 'manage_options', 'asset_finder_settings', array( $this, 'settings_page' ) );
 	}
 
 	/**
@@ -62,8 +90,8 @@ class Settings {
 	*/
 	private function create_admin_script( $url ) {
 		echo "<script>
-		var iframeSource = '" . esc_url( $url ) . "';
-		</script>";
+			var iframeSource = '" . esc_url( $url ) . "';
+			</script>";
 	}
 
 	/**
@@ -81,4 +109,17 @@ class Settings {
 	private function get_settings_web_url( $path ) {
 		return site_url() . '/' . $path . '?afts=' . $this->get_settings_timestamp();
 	}
+
+	/**
+	* Enqueue scripts and styles selectively bsed on admin screen
+	*
+	*/
+	function admin_enqueue_scripts() {
+		$screen = get_current_screen();
+		if ( 'settings_page_asset_finder_settings' === $screen->id ) {
+			wp_enqueue_style( 'asset_finder_style', ASSET_FINDER_URI . 'css/admin.css', array(), 'v.1.0.0', 'screen' );
+			wp_enqueue_script( 'asset_finder_script', ASSET_FINDER_URI . 'js/admin.js', array(), 'v.1.0.2', true );
+		}
+	}
+
 }
