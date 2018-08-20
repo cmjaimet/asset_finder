@@ -29,15 +29,24 @@ class DisplayWeb {
 	*/
 	public function modify_asset_loading() {
 		// get option
+		$assets_json = get_option( 'asset_finder' );
+		$assets = json_decode( $assets_json );
 		// iterate through styles and scripts
-		// foreach style { $this->handle_style( $handle, $action ) }
-		// foreach script { $this->handle_script( $handle, $action ) }
-		// $this->handle_style( 'twentyseventeen-style', 1 ); //twentyseventeen/style.css
-		// $this->handle_script( 'asset_finder_webtest', 1 );
+		// print_r($assets);
+		foreach ( $assets->styles as $handle => $action ) {
+			$this->handle_style( $handle, intval( $action ) );
+		}
+		foreach ( $assets->scripts as $handle => $action ) {
+			$this->handle_script( $handle, intval( $action ) );
+		}
+		// die();
+		// $this->handle_style( 'twentyseventeen-style', 2 ); //twentyseventeen/style.css
+		// $this->handle_script( 'asset_finder_webtest', 2 );
 	}
 
 	private function handle_style( $handle, $action ) {
-		if ( 0 === $action ) {
+		echo $handle;
+		if ( 2 === $action ) {
 			$this->remove_style( $handle );
 		} else {
 			$this->delay_style( $handle );
@@ -45,7 +54,7 @@ class DisplayWeb {
 	}
 
 	private function handle_script( $handle, $action ) {
-		if ( 0 === $action ) {
+		if ( 2 === $action ) {
 			$this->remove_script( $handle );
 		} else {
 			$this->delay_script( $handle );

@@ -28,11 +28,11 @@ class Settings {
 	}
 
 	function plugin_setting_string() {
-		$options = get_option( 'asset_finder' );
+		$settings = get_option( 'asset_finder' );
 		echo '<script>' . "\n";
 		// JSON-encoded list of scripts and styles to be handled differently from default
 		// decode then encode as a way to escpae the contents since JSON is JS-safe
-		echo "var asset_finder_handles = " . json_encode( json_decode( $options ) ) . ";";
+		echo "var asset_finder_handles = " . json_encode( json_decode( $settings ) ) . ";";
 		// store in JS and use after assets loaded by create_admin_script()
 		echo '</script>';
 	}
