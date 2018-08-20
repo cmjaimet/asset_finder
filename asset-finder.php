@@ -1,10 +1,11 @@
 <?php
+namespace AssetFinder;
 /**
  * Plugin Name: Asset Finder
  * Short Name: asset_finder
- * Description: Find all JS and CSS on a site
+ * Description: Find all JS and CSS assets on a site and allow you to remove or late-load them.
  * Author: Charles Jaimet (cmjaimet@gmail.com)
- * Version: 0.0.1
+ * Version: 1.0.0
  * Requires at least: 3.0
  * Tested up to: 4.9
  *
@@ -26,5 +27,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require_once('AssetFinder.php');
-$asset_finder = new AssetFinder();
+define( 'ASSET_FINDER_URI', plugins_url( '', __FILE__ ) . '/' );
+define( 'ASSET_FINDER_PATH', plugin_dir_path( __FILE__ ) );
+
+if ( is_admin() ) {
+	require_once( ASSET_FINDER_PATH . 'classes/Settings.php' );
+} else {
+	if ( ! isset( $_GET[ 'afts' ] ) ) {
+		require_once( ASSET_FINDER_PATH . 'classes/DisplayWeb.php' );
+	} else {
+		require_once( ASSET_FINDER_PATH . 'classes/AssetCollector.php' );
+	}
+}
