@@ -7,7 +7,7 @@ namespace AssetFinder;
  * Author: Charles Jaimet (cmjaimet@gmail.com)
  * Version: 1.0.0
  * Requires at least: 3.0
- * Tested up to: 4.9
+ * Tested up to: 4.9.8
  *
  * This program is free software - you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
