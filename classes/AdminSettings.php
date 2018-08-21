@@ -64,14 +64,22 @@ class Settings {
 		do_settings_sections('asset_finder_settings');
 		echo '<div id="tabs">' . "\n";
 		echo '<ul>';
-		echo '<li><a href="#tabs-1">Scripts</a></li>';
-		echo '<li><a href="#tabs-2">Styles</a></li>';
+		echo '<li><a href="#tabs-1">' . __( 'Scripts' ) . '</a></li>';
+		echo '<li><a href="#tabs-2">' . __( 'Styles' ) . '</a></li>';
 		echo '</ul>' . "\n";
 		echo '<div id="tabs-1">';
-		echo '<table id="af_table_scripts" class="af_table"><tr><th>Handle</th><th>Action</th><th>Source</th></tr></table>';
+		echo '<table id="af_table_scripts" class="af_table"><tr>
+			<th>' . __( 'Handle' ) . '</th>
+			<th>' . __( 'Action' ) . '</th>
+			<th>' . __( 'Source' ) . '</th>
+			</tr></table>';
 		echo '</div>' . "\n";
 		echo '<div id="tabs-2">';
-		echo '<table id="af_table_styles" class="af_table"><tr><th>Handle</th><th>Action</th><th>Source</th></tr></table>';
+		echo '<table id="af_table_styles" class="af_table">
+			<th>' . __( 'Handle' ) . '</th>
+			<th>' . __( 'Action' ) . '</th>
+			<th>' . __( 'Source' ) . '</th>
+			</tr></table>';
 		echo '</div>' . "\n";
 		echo '</div>';
 		$url = $this->get_settings_web_url( '' );
@@ -81,7 +89,7 @@ class Settings {
 	}
 
 	function section_text() {
-		echo '<p>You may choose to late-load or remove each script and stylesheet below.</p>';
+		echo '<p>' . __( 'You may choose to late-load or remove each script and stylesheet below.' ) . '</p>';
 	}
 
 	/**
@@ -89,7 +97,7 @@ class Settings {
 	*
 	*/
 	function admin_menu() {
-		add_options_page('Asset Finder', 'Asset Finder', 'manage_options', 'asset_finder_settings', array( $this, 'settings_page' ) );
+		add_options_page( __( 'Asset Finder' ), __( 'Asset Finder' ), 'manage_options', 'asset_finder_settings', array( $this, 'settings_page' ) );
 	}
 
 	/**
