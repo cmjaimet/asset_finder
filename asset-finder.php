@@ -35,6 +35,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'ASSET_FINDER_URI', plugins_url( '', __FILE__ ) . '/' );
 define( 'ASSET_FINDER_PATH', plugin_dir_path( __FILE__ ) );
 
+// Requirements checker from Fulvio Notarstefano
+require_once( ASSET_FINDER_PATH . 'classes/Requirements.php' );
+$asset_finder_requirements = new \AssetFinder\WP_Requirements(
+  'Asset Finder',
+	plugin_basename( __FILE__ ),
+	array(
+		'PHP' => '7.1.1',
+		'WordPress' => '4.9.7',
+	)
+);
+if ( false === $asset_finder_requirements->pass() ) {
+	// Deactivate the plugin and print an admin notice.
+	$asset_finder_requirements->halt();
+	// Halt the execution of the rest of the plugin.
+	return;
+}
+
 if ( is_admin() ) {
 	require_once( ASSET_FINDER_PATH . 'classes/AdminSettings.php' );
 } elseif ( ! isset( $_GET[ 'afts' ] ) ) {
