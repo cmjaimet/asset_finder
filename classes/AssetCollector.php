@@ -4,7 +4,7 @@ namespace AssetFinder;
 $asset_finder = new \AssetFinder\AssetCollector();
 
 class AssetCollector {
-	private $debug = true;
+	private $debug = false;
 
 	function __construct() {
 		add_action( 'init', array( $this, 'init' ) );
@@ -40,8 +40,10 @@ class AssetCollector {
 
 	private function get_scripts_in_page() {
 		$all = wp_scripts()->registered;
+		$queue = wp_scripts()->queue;
 		$output = array();
-		foreach( $all as $slug => $elem ) {
+		foreach( $queue as $slug ) {
+			$elem = $all[ $slug ];
 			if ( ( '' !== trim( $elem->src ) ) && ( false === strpos( $elem->src, 'wp-admin/' ) ) ) {
 				$footer = 0;
 				if ( isset( $elem->extra['group'] ) && ( 1 === intval( $elem->extra['group'] ) ) ) {
@@ -59,8 +61,10 @@ class AssetCollector {
 
 	private function get_styles_in_page() {
 		$all = wp_styles()->registered;
+		$queue = wp_styles()->queue;
 		$output = array();
-		foreach( $all as $slug => $elem ) {
+		foreach( $queue as $slug ) {
+			$elem = $all[ $slug ];
 			if ( ( '' !== trim( $elem->src ) ) && ( false === strpos( $elem->src, 'wp-admin/' ) ) ) {
 				$media = '';
 				if ( isset( $elem->args ) ) {

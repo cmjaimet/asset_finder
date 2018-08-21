@@ -125,9 +125,9 @@ class Settings {
 	function admin_enqueue_scripts() {
 		$screen = get_current_screen();
 		if ( 'settings_page_asset_finder_settings' === $screen->id ) {
-			wp_enqueue_style( 'asset_finder_style', ASSET_FINDER_URI . 'css/admin.css', array(), 'v.1.0.0', 'screen' );
-			wp_enqueue_style( 'jquery-ui', ASSET_FINDER_URI . 'css/jquery-ui.css', array(), 'v.1.0.7', 'screen' );
-			wp_enqueue_script( 'asset_finder_script', ASSET_FINDER_URI . 'js/admin.js', array(), 'v.1.0.0', true );
+			wp_enqueue_style( 'asset_finder_style', ASSET_FINDER_URI . 'css/admin.css', array(), '1.0.0', 'screen' );
+			wp_enqueue_style( 'jquery-ui', ASSET_FINDER_URI . 'css/jquery-ui.css', array(), '1.12.1', 'screen' );
+			wp_enqueue_script( 'asset_finder_script', ASSET_FINDER_URI . 'js/admin.js', array(), '1.0.0', true );
 			wp_enqueue_script( 'jquery-ui-tabs' );
 		}
 	}
