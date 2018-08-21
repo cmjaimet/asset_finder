@@ -13,6 +13,7 @@ class AssetCollector {
 		$qs_timestamp = isset( $_GET[ 'afts' ] ) ? intval( $_GET[ 'afts' ] ) : 0;
 		if ( $now_timestamp < $qs_timestamp ) {
 			// the query string time stamp is in the future - this will only be true for 5 minutes after the admin settings page is loaded and should prevent execution on accidentally indexed/bookmarked URLs
+			show_admin_bar( false );
 			add_action( 'wp_head', array( $this, 'get_assets_in_page' ) );
 		}
 	}
