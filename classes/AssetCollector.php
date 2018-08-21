@@ -1,22 +1,18 @@
 <?php
 namespace AssetFinder;
 
-$asset_finder = new \AssetFinder\AssetCollector();
+$asset_collector = new \AssetFinder\AssetCollector();
+$asset_collector->initialize();
 
 class AssetCollector {
 	private $debug = false;
 
-	function __construct() {
-		add_action( 'init', array( $this, 'init' ) );
-	}
-
-	function init() {
+	public function initialize() {
 		$this->add_test_assets();
 		$now_timestamp = current_time( 'timestamp' );
 		$qs_timestamp = isset( $_GET[ 'afts' ] ) ? intval( $_GET[ 'afts' ] ) : 0;
 		if ( $now_timestamp < $qs_timestamp ) {
 			// the query string time stamp is in the future - this will only be true for 5 minutes after the admin settings page is loaded and should prevent execution on accidentally indexed/bookmarked URLs
-			show_admin_bar( false );
 			add_action( 'wp_head', array( $this, 'get_assets_in_page' ) );
 		}
 	}
@@ -85,10 +81,20 @@ class AssetCollector {
 	*/
 	private function add_test_assets() {
 		if ( true === $this->debug ) {
-			wp_enqueue_style( 'asset_finder_style_test', ASSET_FINDER_URI . 'css/af_test.css', array(), 'v.1.0.0', 'screen' );
-			wp_enqueue_script( 'asset_finder_script_head', ASSET_FINDER_URI . 'js/af_test_head.js', array(), 'v.1.0.1', false );
-			wp_enqueue_script( 'asset_finder_script_foot', ASSET_FINDER_URI . 'js/af_test_foot.js', array(), 'v.1.0.5', true );
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_tests' ), 10, 0 );
 		}
+	}
+
+	/**
+	*
+	*/
+	public function enqueue_tests() {
+		wp_register_style( 'asset_finder_style_test', ASSET_FINDER_URI . 'css/af_test.css', array(), 'v.1.0.0', 'screen' );
+		wp_register_script( 'asset_finder_script_head', ASSET_FINDER_URI . 'js/af_test_head.js', array(), 'v.1.0.0', false );
+		wp_register_script( 'asset_finder_script_foot', ASSET_FINDER_URI . 'js/af_test_foot.js', array(), 'v.1.0.0', true );
+		wp_enqueue_style( 'asset_finder_style_test' );
+		wp_enqueue_script( 'asset_finder_script_head' );
+		wp_enqueue_script( 'asset_finder_script_foot' );
 	}
 
 }

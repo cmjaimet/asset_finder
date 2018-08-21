@@ -1,26 +1,25 @@
 <?php
 namespace AssetFinder;
-/**
-* Next steps:
-* 	- add changes to options
-* 	- read changes from options
-* 	- parse JSON and remove/late-load styles and scripts as requested
-*/
 
-$asset_finder = new \AssetFinder\DisplayWeb();
+$asset_display = new \AssetFinder\DisplayWeb();
+$asset_display->initialize();
 
 class DisplayWeb {
 	private $debug = true;
 	private $styles = [];
 
-	function __construct() {
-		add_action( 'init', array( $this, 'init' ) );
-	}
-
-	function init() {
+	function initialize() {
 		add_action( 'wp_print_styles', array( $this, 'modify_asset_loading' ), 100, 0 );
 		add_action( 'wp_footer', array( $this, 'lateload_styles' ), 10, 0 );
-		wp_enqueue_script( 'asset_finder_lateload', ASSET_FINDER_URI . 'js/web.js', array(), '1.0.0', false );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ), 10, 0 );
+	}
+
+	/**
+	*
+	*/
+	public function enqueue_scripts() {
+		wp_register_script( 'asset_finder_lateload', ASSET_FINDER_URI . 'js/web.js', array(), '1.0.0', false );
+		wp_enqueue_script( 'asset_finder_lateload' );
 	}
 
 	/**
