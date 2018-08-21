@@ -27,19 +27,20 @@ class Settings {
 		add_settings_field('af_style', 'Plugin Text Input', array( $this, 'plugin_setting_string' ), 'asset_finder_settings', 'asset_finder_main');
 	}
 
+	/**
+	* JSON-encoded list of scripts and styles to be handled differently from default
+	* decode then encode as a way to escpae the contents since JSON is JS-safe
+	* store in JS and use after assets loaded by create_admin_script()
+	*/
 	function plugin_setting_string() {
 		$settings = get_option( 'asset_finder' );
 		echo '<script>' . "\n";
-		// JSON-encoded list of scripts and styles to be handled differently from default
-		// decode then encode as a way to escpae the contents since JSON is JS-safe
 		echo "var asset_finder_handles = " . json_encode( json_decode( $settings ) ) . ";";
-		// store in JS and use after assets loaded by create_admin_script()
 		echo '</script>';
 	}
 
 	function sanitize_settings($input) {
 		$output = array( 'scripts' => array(), 'styles' => array() );
-		// $newinput['scripts'] = trim($input['scripts']);
 		foreach( $input['scripts'] as $handle => $action ) {
 			$action = intval( $action );
 			if ( 0 < $action ) {
@@ -56,15 +57,22 @@ class Settings {
 	}
 
 	function settings_page() {
-		echo '<div>';
-		echo '<h1>' . esc_html( $this->title ) . '</h1>';
-		echo '<form action="options.php" method="post">';
+		echo '<script>jQuery( function() { jQuery( "#tabs" ).tabs(); } );</script>' . "\n";
+		echo '<form action="options.php" method="post">' . "\n";
 		settings_fields('asset_finder');
 		do_settings_sections('asset_finder_settings');
-		echo '<h2>Scripts</h2>';
+		echo '<div id="tabs">' . "\n";
+		echo '<ul>';
+		echo '<li><a href="#tabs-1">Scripts</a></li>';
+		echo '<li><a href="#tabs-2">Styles</a></li>';
+		echo '</ul>' . "\n";
+		echo '<div id="tabs-1">';
 		echo '<table id="af_table_scripts" class="af_table"><tr><th>Handle</th><th>Action</th><th>Source</th></tr></table>';
-		echo '<h2>Styles</h2>';
+		echo '</div>' . "\n";
+		echo '<div id="tabs-2">';
 		echo '<table id="af_table_styles" class="af_table"><tr><th>Handle</th><th>Action</th><th>Source</th></tr></table>';
+		echo '</div>' . "\n";
+		echo '</div>';
 		$url = $this->get_settings_web_url( '' );
 		$this->create_admin_script( $url );
 		submit_button();
@@ -118,7 +126,9 @@ class Settings {
 		$screen = get_current_screen();
 		if ( 'settings_page_asset_finder_settings' === $screen->id ) {
 			wp_enqueue_style( 'asset_finder_style', ASSET_FINDER_URI . 'css/admin.css', array(), 'v.1.0.0', 'screen' );
-			wp_enqueue_script( 'asset_finder_script', ASSET_FINDER_URI . 'js/admin.js', array(), 'v.1.0.2', true );
+			wp_enqueue_style( 'jquery-ui', ASSET_FINDER_URI . 'css/jquery-ui.css', array(), 'v.1.0.7', 'screen' );
+			wp_enqueue_script( 'asset_finder_script', ASSET_FINDER_URI . 'js/admin.js', array(), 'v.1.0.0', true );
+			wp_enqueue_script( 'jquery-ui-tabs' );
 		}
 	}
 
