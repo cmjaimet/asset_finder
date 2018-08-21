@@ -20,8 +20,7 @@ class DisplayWeb {
 	function init() {
 		add_action( 'wp_print_styles', array( $this, 'modify_asset_loading' ), 100, 0 );
 		add_action( 'wp_footer', array( $this, 'lateload_styles' ), 10, 0 );
-		wp_enqueue_script( 'asset_finder_lateload', ASSET_FINDER_URI . 'js/web.js', array(), 'v.1.0.0', false );
-		wp_enqueue_script( 'asset_finder_webtest', ASSET_FINDER_URI . 'js/test.js', array(), 'v.1.0.1', false );
+		wp_enqueue_script( 'asset_finder_lateload', ASSET_FINDER_URI . 'js/web.js', array(), '1.0.0', false );
 	}
 
 	/**
@@ -32,7 +31,6 @@ class DisplayWeb {
 		$assets_json = get_option( 'asset_finder' );
 		$assets = json_decode( $assets_json );
 		// iterate through styles and scripts
-		// print_r($assets);
 		foreach ( $assets->styles as $handle => $action ) {
 			$this->handle_style( $handle, intval( $action ) );
 		}
@@ -72,7 +70,6 @@ class DisplayWeb {
 	}
 
 	public function lateload_styles() {
-		// cmj: enqueue this inline
 		echo '<script type="text/javascript">' . "\n";
 		foreach ( $this->styles as $handle => $media ) {
 			echo "af_lateload( '" . esc_js( $handle ) . "', '" . esc_js( $media ) . "' )\n";
