@@ -26,16 +26,15 @@ class AssetCollector {
 		$assets = array();
 		$assets['scripts'] = $this->get_scripts_in_page();
 		$assets['styles'] = $this->get_styles_in_page();
-		$json = json_encode( $assets );
-		$this->create_web_script( $json );
+		$this->create_web_script( $assets );
 	}
 
-	private function create_web_script( $message ) {
+	private function create_web_script( $assets ) {
 		echo "<script type='text/javascript'>
 		var sendMessage = function ( msg ) {
 			window.parent.postMessage( msg, '*' );
 		};
-		sendMessage( JSON.stringify(" . $message . ") );
+		sendMessage( JSON.stringify(" . json_encode( $assets ) . ") );
 		</script>";
 	}
 

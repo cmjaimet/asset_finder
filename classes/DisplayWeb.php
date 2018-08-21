@@ -39,13 +39,9 @@ class DisplayWeb {
 		foreach ( $assets->scripts as $handle => $action ) {
 			$this->handle_script( $handle, intval( $action ) );
 		}
-		// die();
-		// $this->handle_style( 'twentyseventeen-style', 2 ); //twentyseventeen/style.css
-		// $this->handle_script( 'asset_finder_webtest', 2 );
 	}
 
 	private function handle_style( $handle, $action ) {
-		echo $handle;
 		if ( 2 === $action ) {
 			$this->remove_style( $handle );
 		} else {

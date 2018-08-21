@@ -1,1 +1,18 @@
-.af_table tr th { text-align: left; }
+.af_table {
+	border-collapse: collapse;
+}
+.af_table tr th {
+	background-color: #666;
+	color: #FFF;
+	text-align: left;
+	padding:10px 4px;
+}
+tr.af_row_0 {
+	background-color: #FFF;
+}
+tr.af_row_1 {
+	background-color: #EEA;
+}
+tr.af_row_2 {
+	background-color: #EAA;
+}
