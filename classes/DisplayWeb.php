@@ -30,11 +30,15 @@ class DisplayWeb {
 		$assets_json = get_option( 'asset_finder' );
 		$assets = json_decode( $assets_json );
 		// iterate through styles and scripts
-		foreach ( $assets->styles as $handle => $action ) {
-			$this->handle_style( $handle, intval( $action ) );
+		if ( isset( $assets->styles ) ) {
+			foreach ( $assets->styles as $handle => $action ) {
+				$this->handle_style( $handle, intval( $action ) );
+			}
 		}
-		foreach ( $assets->scripts as $handle => $action ) {
-			$this->handle_script( $handle, intval( $action ) );
+		if ( isset( $assets->scripts ) ) {
+			foreach ( $assets->scripts as $handle => $action ) {
+				$this->handle_script( $handle, intval( $action ) );
+			}
 		}
 	}
 

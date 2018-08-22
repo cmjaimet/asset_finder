@@ -5,7 +5,7 @@ $asset_collector = new \AssetFinder\AssetCollector();
 $asset_collector->initialize();
 
 class AssetCollector {
-	private $debug = false;
+	private $debug = true;
 
 	public function initialize() {
 		$this->add_test_assets();
