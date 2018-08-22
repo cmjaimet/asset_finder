@@ -41,8 +41,8 @@ $asset_finder_requirements = new \AssetFinder\WP_Requirements(
   'Asset Finder',
 	plugin_basename( __FILE__ ),
 	array(
-		'PHP' => '7.1.1',
-		'WordPress' => '4.9.7',
+		'PHP' => '5.6.30',
+		'WordPress' => '4.2',
 	)
 );
 if ( false === $asset_finder_requirements->pass() ) {
