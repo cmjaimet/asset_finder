@@ -1,10 +1,13 @@
-# Asset Finder Wordpress Plugin
+# Asset Finder WordPress Plugin
 
 ### v.1.0.0
 
-## Find and manage the scripts and styles enqueued on your Wordpress website
+## Find and manage the scripts and styles enqueued on your WordPress website
 
-Once you install this plugin you will 
+Now available through WordPress.org at:
+https://wordpress.org/plugins/asset-finder/
+
+Once you install this plugin you will
 
 For now this tests only the home page. In future releases it will test several pages and may allow the user to select the pages to test.
 
